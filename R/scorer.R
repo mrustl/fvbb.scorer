@@ -1,26 +1,36 @@
-library(rvest) 
 
-path_list <- list(
-saisonmanager = "https://fvbb.saisonmanager.de",
-spielplan =  "<saisonmanager>/index.php?seite=spielplan",
-spielplan_u11 = "<spielplan>&table=789")
-
-paths <- kwb.utils::resolve(path_list)
-
-xml2::read_html(paths$spielplan_u11) %>% 
-  rvest::html_nodes("td")
-
-content <- xml2::read_html(paths$spielplan_u11)
-
-game_results_links <- xml2::read_html(paths$spielplan_u11) %>% 
-  rvest::html_nodes("td.center a")
-
-is_over <- rvest::html_text(game_results_links) != ""
-
-game_links <- game_results_links[is_over] %>%  rvest::html_attr("href") 
-
-game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
-
+#' Get Scorers
+#'
+#' @param game_link_full link to game stats url
+#'
+#' @return table with scorers
+#' @export
+#' @importFrom xml2 read_html
+#' @importFrom rvest html_table html_nodes html_attr html_text
+#' @importFrom tidyr spread
+#' @importFrom stringr str_remove_all str_extract
+#' @importFrom dplyr left_join
+#' @importFrom kwb.utils resolve
+#' @examples
+#' path_list <- list(
+#' saisonmanager = "https://fvbb.saisonmanager.de",
+#' spielplan =  "<saisonmanager>/index.php?seite=spielplan",
+#' spielplan_u11 = "<spielplan>&table=789")
+#' 
+#' paths <- kwb.utils::resolve(path_list)
+#' 
+#' content <- xml2::read_html(paths$spielplan_u11)
+#' 
+#' game_results_links <- xml2::read_html(paths$spielplan_u11) %>% 
+#' rvest::html_nodes("td.center a")
+#' 
+#' is_over <- rvest::html_text(game_results_links) != ""
+#' 
+#' game_links <- game_results_links[is_over] %>%  rvest::html_attr("href") 
+#' game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
+#' 
+#' get_scorers(game_links_full[1])
+#' 
 get_scorers <- function(game_link_full) {
 
 game_tables <- xml2::read_html(game_link_full) %>% rvest::html_table()
@@ -57,6 +67,7 @@ game_stats$Spielnummer <- game_master_wide$Spielnummer
 dplyr::left_join(game_master_wide, game_stats) 
 }
 
+if(FALSE) {
 table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) get_scorers(x)))
 
 cols_to_gather <- names(table_scorers)[!names(table_scorers) %in% c("scorer", "scorer_goal", "scorer_assistant")]
@@ -84,5 +95,6 @@ table_scorer_long_tidy %>%
                 scores = goal + assistant) %>% 
   dplyr::arrange(dplyr::desc(scores)) %>%  DT::datatable()
 
+}
 
 

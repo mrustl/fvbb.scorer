@@ -39,43 +39,8 @@ game_links <- game_results_links[is_over] %>%  rvest::html_attr("href")
 
 game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
 
-get_scorers <- function(game_link_full) {
 
-game_tables <- xml2::read_html(game_link_full) %>% rvest::html_table()
-
-
-game_master <- game_tables[[1]]
-
-colnames(game_master) <- c("key", "value")
-
-game_master$key <- gsub(pattern = ":", "", game_master$key)
-game_master <- game_master[game_master$key != "", ]
-
-game_master_wide <- tidyr::spread(data = game_master, key = "key", value = "value")
-
-game_master_wide$Spielnummer <- as.numeric(game_master_wide$Spielnummer)
-game_master_wide$Zuschauerzahl <- as.numeric(game_master_wide$Zuschauerzahl)
-
-game_stats <- game_tables[[2]]
-
-names(game_stats) <- c("time", "event", "score", "scorer", "team")
-
-
-rows_to_keep <- !grepl("H\u00E4lfte|Verl\u00E4ngerung", game_stats$time)
-
-game_stats <- game_stats[rows_to_keep,]
-
-game_stats$scorer_goal <- stringr::str_remove_all(game_stats$scorer, "\\(.*\\)") %>%  
-  stringr::str_trim() 
-game_stats$scorer_assistant <- stringr::str_extract(game_stats$scorer,pattern = "\\(.*\\)") %>% 
-stringr::str_remove_all(pattern = "\\(|\\)")
-
-game_stats$Spielnummer <- game_master_wide$Spielnummer
-
-dplyr::left_join(game_master_wide, game_stats) 
-}
-
-table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) get_scorers(x)))
+table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) fvbb.scorers::get_scorers(x)))
 
 cols_to_gather <- names(table_scorers)[!names(table_scorers) %in% c("scorer", "scorer_goal", "scorer_assistant")]
 
