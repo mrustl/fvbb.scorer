@@ -11,7 +11,7 @@ Authors@R:
              role = "cph"))
 Description: Helper functions for creating scorer table
     based on game results on FVBB website
-    (https://fvbb.saisonmanager.de)
+    (https://fvbb.saisonmanager.de).
 License: MIT + file LICENSE
 URL: https://github.com/mrustl/fvbb.scorer
 BugReports: https://github.com/mrustl/fvbb.scorer/issues
@@ -23,7 +23,8 @@ Imports:
     rvest,
     tidyr,
     DT,
-    stringr
+    stringr,
+    magrittr
 Suggests: 
     covr,
     knitr,
