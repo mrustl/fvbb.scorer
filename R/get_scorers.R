@@ -1,4 +1,3 @@
-
 #' Get Scorers
 #'
 #' @param game_link_full link to game stats url
@@ -12,24 +11,9 @@
 #' @importFrom dplyr left_join
 #' @importFrom kwb.utils resolve
 #' @examples
-#' path_list <- list(
-#' saisonmanager = "https://fvbb.saisonmanager.de",
-#' spielplan =  "<saisonmanager>/index.php?seite=spielplan",
-#' spielplan_u11 = "<spielplan>&table=789")
-#' 
-#' paths <- kwb.utils::resolve(path_list)
-#' 
-#' content <- xml2::read_html(paths$spielplan_u11)
-#' 
-#' game_results_links <- xml2::read_html(paths$spielplan_u11) %>% 
-#' rvest::html_nodes("td.center a")
-#' 
-#' is_over <- rvest::html_text(game_results_links) != ""
-#' 
-#' game_links <- game_results_links[is_over] %>%  rvest::html_attr("href") 
-#' game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
-#' 
-#' get_scorers(game_links_full[1])
+#' games_u11 <- get_links_game()[7,]
+#' completed_games_u11 <- urls_completed_games(games_u11$links_url)
+#' if(length(completed_games_u11)>0) get_scorers(completed_games_u11[1])
 #' 
 get_scorers <- function(game_link_full) {
 
@@ -64,13 +48,35 @@ stringr::str_remove_all(pattern = "\\(|\\)")
 
 game_stats$Spielnummer <- game_master_wide$Spielnummer
 
-dplyr::left_join(game_master_wide, game_stats) 
+dplyr::left_join(game_master_wide, game_stats, by = "Spielnummer") 
 }
 
-if(FALSE) {
-table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) get_scorers(x)))
 
-cols_to_gather <- names(table_scorers)[!names(table_scorers) %in% c("scorer", "scorer_goal", "scorer_assistant")]
+
+#' Create Table Scorer
+#'
+#' @param url_games single url to game as retrieved by get_links_game()
+#'
+#' @return scorer table
+#' @export
+#' @importFrom dplyr filter mutate arrange count desc
+#' @importFrom data.table rbindlist
+#' @importFrom tidyr pivot_longer
+#' @importFrom stringr str_remove_all
+#' @examples
+#' games_u11 <- get_links_game()[7,]
+#' 
+#' create_table_scorers(url_games = games_u11$links_url)
+#' 
+create_table_scorers <- function(url_games) {
+  
+  
+  completed_games <- urls_completed_games(url_games)
+  
+  if(length(completed_games)>0) {
+   
+  table_scorers <- data.table::rbindlist(lapply(completed_games, function(x) get_scorers(x)))
+
 
 table_scorer_long <- tidyr::pivot_longer(table_scorers, 
                                          names_to = "score_type", 
@@ -78,23 +84,19 @@ table_scorer_long <- tidyr::pivot_longer(table_scorers,
                                          cols = c( "scorer_goal", "scorer_assistant"))
 
 table_scorer_long_tidy <- table_scorer_long %>%  
-  dplyr::mutate(score_type = stringr::str_remove_all(score_type, pattern = "scorer_")) %>% 
-  dplyr::filter(!is.na(scorer_name)) 
+  dplyr::mutate(score_type = stringr::str_remove_all(.data$score_type, pattern = "scorer_")) %>% 
+  dplyr::filter(!is.na(.data$scorer_name)) 
+
+
 
 table_scorer_long_tidy %>% 
-  dplyr::count(scorer_name) %>%  
-  dplyr::arrange(dplyr::desc(n)) 
-  dplyr::mutate
- 
-
-table_scorer_long_tidy %>% 
-  dplyr::count(team, scorer_name, score_type) %>% 
+  dplyr::filter(.data$event == "Tor") %>% 
+  dplyr::count(.data$team, .data$scorer_name, .data$score_type) %>% 
   tidyr::pivot_wider(names_from = "score_type", values_from = "n", values_fill = list(n = 0)) %>% 
-  dplyr::mutate(goal,
-                assistant, 
-                scores = goal + assistant) %>% 
-  dplyr::arrange(dplyr::desc(scores)) %>%  DT::datatable()
+  dplyr::mutate(scores = .data$goal + .data$assistant) %>% 
+  dplyr::arrange(dplyr::desc(.data$scores)) 
 
+  } else {
+  stop("No games completed yet") }
 }
-
 

@@ -16,54 +16,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(fvbb.scorer)
-library(rvest) 
 
-path_list <- list(
-saisonmanager = "https://fvbb.saisonmanager.de",
-spielplan =  "<saisonmanager>/index.php?seite=spielplan",
-spielplan_u11 = "<spielplan>&table=789")
+games_u11 <- fvbb.scorer::get_links_game()[7,]
+games_u11
 
-paths <- kwb.utils::resolve(path_list)
+tbl_scorers <- fvbb.scorer::create_table_scorers(url_games = games_u11$links_url) 
 
-xml2::read_html(paths$spielplan_u11) %>% 
-  rvest::html_nodes("td")
+tbl_scorers %>%  DT::datatable()
 
-content <- xml2::read_html(paths$spielplan_u11)
-
-game_results_links <- xml2::read_html(paths$spielplan_u11) %>% 
-  rvest::html_nodes("td.center a")
-
-is_over <- rvest::html_text(game_results_links) != ""
-
-game_links <- game_results_links[is_over] %>%  rvest::html_attr("href") 
-
-game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
-
-
-table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) fvbb.scorer::get_scorers(x)))
-
-cols_to_gather <- names(table_scorers)[!names(table_scorers) %in% c("scorer", "scorer_goal", "scorer_assistant")]
-
-table_scorer_long <- tidyr::pivot_longer(table_scorers, 
-                                         names_to = "score_type", 
-                                         values_to = "scorer_name", 
-                                         cols = c( "scorer_goal", "scorer_assistant"))
-
-table_scorer_long_tidy <- table_scorer_long %>%  
-  dplyr::mutate(score_type = stringr::str_remove_all(score_type, pattern = "scorer_")) %>% 
-  dplyr::filter(!is.na(scorer_name)) 
-
-table_scorer_long_tidy %>% 
-  dplyr::count(scorer_name) %>%  
-  dplyr::arrange(dplyr::desc(n)) 
-  dplyr::mutate
- 
-
-table_scorer_long_tidy %>% 
-  dplyr::count(team, scorer_name, score_type) %>% 
-  tidyr::pivot_wider(names_from = "score_type", values_from = "n", values_fill = list(n = 0)) %>% 
-  dplyr::mutate(goal,
-                assistant, 
-                scores = goal + assistant) %>% 
-  dplyr::arrange(dplyr::desc(scores)) %>%  DT::datatable()
 ```
