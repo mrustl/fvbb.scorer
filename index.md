@@ -1,4 +1,4 @@
-[![Appveyor build Status](https://ci.appveyor.com/api/projects/status/github/mrustl/fvbb.scorer?branch=master&svg=true)](https://ci.appveyor.com/project/mrustl/fvbb-scorer/branch/master)
+[![Appveyor build Status](https://ci.appveyor.com/api/projects/status/2ib3jrl85ea2vqcd?svg=true)](https://ci.appveyor.com/project/KWB-R/fvbb-scorer)
 [![Travis build Status](https://travis-ci.org/mrustl/fvbb.scorer.svg?branch=master)](https://travis-ci.org/mrustl/fvbb.scorer)
 [![codecov](https://codecov.io/github/mrustl/fvbb.scorer/branch/master/graphs/badge.svg)](https://codecov.io/github/mrustl/fvbb.scorer)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
