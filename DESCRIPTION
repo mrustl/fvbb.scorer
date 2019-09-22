@@ -22,5 +22,11 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-Remotes:  
+Remotes: 
     github::kwb-r/kwb.utils
+Imports: 
+    xml2,
+    rvest,
+    dplyr,
+    tidyr,
+    DT
