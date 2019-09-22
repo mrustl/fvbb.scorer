@@ -1,8 +1,8 @@
 ---
-title: "scorer"
+title: "Scorer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{scorer}
+  %\VignetteIndexEntry{Scorer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,16 +12,41 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+DT::datatable(NULL) ### required: https://stackoverflow.com/a/39734221
 ```
 
-```{r setup}
+```{r setup, include=FALSE}
 library(fvbb.scorer)
 
-games_u11 <- fvbb.scorer::get_links_game()[7,]
-games_u11
+games <- fvbb.scorer::get_links_game()
 
-tbl_scorers <- fvbb.scorer::create_table_scorers(url_games = games_u11$links_url) 
 
-tbl_scorers %>%  DT::datatable()
+games_stats_list <- setNames(sapply(games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
+                             nm = games$links_text)
+
+
+games_stats_list_played_only <- games_stats_list[unlist(lapply(games_stats_list, function(x) !inherits(x, "try-error")))]
+
+#names(games_stats_list_played_only)
+
+
 
 ```
+
+
+```{r scorers, echo = FALSE, results ='asis'}
+
+
+for (i in seq_along(games_stats_list_played_only)) {
+
+  
+cat(sprintf("\n## %s\n\n", 
+        names(games_stats_list_played_only)[i]))
+print(htmltools::tagList(DT::datatable(games_stats_list_played_only[[i]])))
+cat("\n\n")
+
+}
+
+
+```
+
