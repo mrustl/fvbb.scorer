@@ -44,7 +44,8 @@ game_stats <- game_stats[rows_to_keep,]
 game_stats$scorer_goal <- stringr::str_remove_all(game_stats$scorer, "\\(.*\\)") %>%  
   stringr::str_trim() 
 game_stats$scorer_assistant <- stringr::str_extract(game_stats$scorer,pattern = "\\(.*\\)") %>% 
-stringr::str_remove_all(pattern = "\\(|\\)")
+stringr::str_remove_all(pattern = "\\(|\\)") %>% 
+stringr::str_trim()
 
 game_stats$Spielnummer <- game_master_wide$Spielnummer
 
