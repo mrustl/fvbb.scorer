@@ -18,6 +18,7 @@ BugReports: https://github.com/mrustl/fvbb.scorer/issues
 Imports: 
     data.table,
     dplyr,
+    kwb.utils,
     xml2,
     rvest,
     tidyr,
