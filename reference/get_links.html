@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • fvbb.scorer</title>
+<title>Get Links — get_links • fvbb.scorer</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Get Links — get_links" />
+<meta property="og:description" content="Get Links" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,84 +118,63 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Get Links</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mrustl/fvbb.scorer/blob/master/R/get_links.R'><code>R/get_links.R</code></a></small>
+    <div class="hidden name"><code>get_links.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Get Links</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>get_links</span>(<span class='kw'>url_saisonmanager</span> <span class='kw'>=</span> <span class='fu'><a href='default_saisonmanager_url.html'>default_saisonmanager_url</a></span>(),
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"*"</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="create_table_scorers.html">create_table_scorers()</a></code> </p>
-        </td>
-        <td><p>Create Table Scorer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="default_saisonmanager_url.html">default_saisonmanager_url()</a></code> </p>
-        </td>
-        <td><p>Default URL for FVBB Saisonmanager</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_links.html">get_links()</a></code> </p>
-        </td>
-        <td><p>Get Links</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_links_game.html">get_links_game()</a></code> </p>
-        </td>
-        <td><p>Get Links To Games</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_links_scorer.html">get_links_scorer()</a></code> </p>
-        </td>
-        <td><p>Get Links To Scorers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_links_table.html">get_links_table()</a></code> </p>
-        </td>
-        <td><p>Get Links To Tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_scorers.html">get_scorers()</a></code> </p>
-        </td>
-        <td><p>Get Scorers</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="urls_completed_games.html">urls_completed_games()</a></code> </p>
-        </td>
-        <td><p>URLs of completed games</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>url_saisonmanager</th>
+      <td><p>base url to FVBB saisonmanager (default: default_saisonmanager_url())</p></td>
+    </tr>
+    <tr>
+      <th>select</th>
+      <td><p>which type of info ("spielplan", "table, "scorer") to select (default: *, i.e. 
+everything)</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>tibble with links to spielplaene, tables and scorers</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>get_links</span>(<span class='kw'>url_saisonmanager</span> <span class='kw'>=</span> <span class='st'>"https://fvbb.saisonmanager.de"</span>)</div><div class='output co'>#&gt; # A tibble: 21 x 3
+#&gt;    links_text              links_url                                     type   
+#&gt;    &lt;chr&gt;                   &lt;chr&gt;                                         &lt;chr&gt;  
+#&gt;  1 Herren Großfeld Region… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  2 Herren Kleinfeld Regio… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  3 Herren Kleinfeld Verba… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  4 Ü30 Masters Kleintor    https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  5 U15 Kleinfeld Regional… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  6 U13 Kleinfeld Regional… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  7 U11 Kleintor Regionall… https://fvbb.saisonmanager.de/index.php?seit… spielp…
+#&gt;  8 Herren Großfeld Region… https://fvbb.saisonmanager.de/index.php?seit… table  
+#&gt;  9 Herren Kleinfeld Regio… https://fvbb.saisonmanager.de/index.php?seit… table  
+#&gt; 10 Herren Kleinfeld Verba… https://fvbb.saisonmanager.de/index.php?seit… table  
+#&gt; # … with 11 more rows</div><div class='input'>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

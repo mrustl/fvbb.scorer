@@ -121,7 +121,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get Scorers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mrustl/fvbb.scorer/blob/master/R/scorer.R'><code>R/scorer.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/mrustl/fvbb.scorer/blob/master/R/get_scorers.R'><code>R/get_scorers.R</code></a></small>
     <div class="hidden name"><code>get_scorers.Rd</code></div>
     </div>
 
@@ -145,24 +145,9 @@
     <p>table with scorers</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-<span class='kw'>saisonmanager</span> <span class='kw'>=</span> <span class='st'>"https://fvbb.saisonmanager.de"</span>,
-<span class='kw'>spielplan</span> <span class='kw'>=</span>  <span class='st'>"&lt;saisonmanager&gt;/index.php?seite=spielplan"</span>,
-<span class='kw'>spielplan_u11</span> <span class='kw'>=</span> <span class='st'>"&lt;spielplan&gt;&amp;table=789"</span>)
-
-<span class='no'>paths</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/kwb.utils/man/resolve.html'>resolve</a></span>(<span class='no'>path_list</span>)
-
-<span class='no'>content</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_html</a></span>(<span class='no'>paths</span>$<span class='no'>spielplan_u11</span>)
-
-<span class='no'>game_results_links</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_html</a></span>(<span class='no'>paths</span>$<span class='no'>spielplan_u11</span>) <span class='kw'>%&gt;%</span>
-<span class='kw pkg'>rvest</span><span class='kw ns'>::</span><span class='fu'><a href='https://rvest.tidyverse.org/reference/html_nodes.html'>html_nodes</a></span>(<span class='st'>"td.center a"</span>)
-
-<span class='no'>is_over</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rvest</span><span class='kw ns'>::</span><span class='fu'><a href='https://rvest.tidyverse.org/reference/html_text.html'>html_text</a></span>(<span class='no'>game_results_links</span>) <span class='kw'>!=</span> <span class='st'>""</span>
-
-<span class='no'>game_links</span> <span class='kw'>&lt;-</span> <span class='no'>game_results_links</span>[<span class='no'>is_over</span>] <span class='kw'>%&gt;%</span>  <span class='kw pkg'>rvest</span><span class='kw ns'>::</span><span class='fu'><a href='https://rvest.tidyverse.org/reference/html_text.html'>html_attr</a></span>(<span class='st'>"href"</span>)
-<span class='no'>game_links_full</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s%s"</span>, <span class='no'>paths</span>$<span class='no'>saisonmanager</span>, <span class='no'>game_links</span>)
-
-<span class='fu'>get_scorers</span>(<span class='no'>game_links_full</span>[<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='message'>Joining, by = "Spielnummer"</span></div><div class='output co'>#&gt;                   Austragungsort      Datum                      Liga
+    <pre class="examples"><div class='input'><span class='no'>games_u11</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_links_game.html'>get_links_game</a></span>()[<span class='fl'>7</span>,]
+<span class='no'>completed_games_u11</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='urls_completed_games.html'>urls_completed_games</a></span>(<span class='no'>games_u11</span>$<span class='no'>links_url</span>)
+<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>completed_games_u11</span>)<span class='kw'>&gt;</span><span class='fl'>0</span>) <span class='fu'>get_scorers</span>(<span class='no'>completed_games_u11</span>[<span class='fl'>1</span>])</div><div class='output co'>#&gt;                   Austragungsort      Datum                      Liga
 #&gt; 1 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
 #&gt; 2 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
 #&gt; 3 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
