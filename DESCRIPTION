@@ -1,0 +1,26 @@
+Package: fvbb.scorer
+Title: Create Scorer Table Based on Game Results of FVBB
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Michael",
+             family = "Rustler",
+             role = c("aut", "cre"),
+             email = "michael.rustler@kompetenz-wasser.de",
+             comment = c(ORCID = "0000-0003-0647-7726")),
+      person(given = "Michael Rustler",
+             role = "cph"))
+Description: Helper functions for creating scorer table
+    based on game results on FVBB website
+    (https://fvbb.saisonmanager.de)
+License: MIT + file LICENSE
+URL: https://github.com/KWB-R/fvbb.scorer
+BugReports: https://github.com/KWB-R/fvbb.scorer/issues
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    covr,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Remotes:  
+    github::kwb-r/kwb.utils
