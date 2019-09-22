@@ -15,18 +15,20 @@ Description: Helper functions for creating scorer table
 License: MIT + file LICENSE
 URL: https://github.com/mrustl/fvbb.scorer
 BugReports: https://github.com/mrustl/fvbb.scorer/issues
-Encoding: UTF-8
-LazyData: true
-Suggests: 
-    covr,
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
-Remotes: 
-    github::kwb-r/kwb.utils
 Imports: 
     xml2,
     rvest,
     dplyr,
     tidyr,
-    DT
+    DT,
+    stringr
+Suggests: 
+    covr,
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Remotes: 
+    github::kwb-r/kwb.utils
+Encoding: UTF-8
+LazyData: true
