@@ -40,7 +40,7 @@ game_links <- game_results_links[is_over] %>%  rvest::html_attr("href")
 game_links_full <- sprintf("%s%s", paths$saisonmanager, game_links)
 
 
-table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) fvbb.scorers::get_scorers(x)))
+table_scorers <- data.table::rbindlist(lapply(game_links_full, function(x) fvbb.scorer::get_scorers(x)))
 
 cols_to_gather <- names(table_scorers)[!names(table_scorers) %in% c("scorer", "scorer_goal", "scorer_assistant")]
 
