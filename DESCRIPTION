@@ -13,8 +13,8 @@ Description: Helper functions for creating scorer table
     based on game results on FVBB website
     (https://fvbb.saisonmanager.de)
 License: MIT + file LICENSE
-URL: https://github.com/KWB-R/fvbb.scorer
-BugReports: https://github.com/KWB-R/fvbb.scorer/issues
+URL: https://github.com/mrustl/fvbb.scorer
+BugReports: https://github.com/mrustl/fvbb.scorer/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 
