@@ -13,6 +13,7 @@ tibble with links to scorers
 Get Links To Scorers
 }
 \examples{
+\dontrun{
 get_links_scorer()
-
+}
 }

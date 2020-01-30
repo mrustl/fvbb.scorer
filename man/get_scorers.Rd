@@ -16,8 +16,9 @@ table with scorers
 Get Scorers
 }
 \examples{
+\dontrun{
 games_u11 <- get_links_game()[7,]
 completed_games_u11 <- urls_completed_games(games_u11$links_url)
 if(length(completed_games_u11)>0) get_scorers(completed_games_u11[1])
-
+}
 }

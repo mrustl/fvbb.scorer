@@ -20,6 +20,7 @@ tibble with links to spielplaene, tables and scorers
 Get Links
 }
 \examples{
+\dontrun{
 get_links(url_saisonmanager = "https://fvbb.saisonmanager.de")
-
+}
 }

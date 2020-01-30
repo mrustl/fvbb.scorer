@@ -13,6 +13,7 @@ tibble with links to tables
 Get Links To Tables
 }
 \examples{
+\dontrun{
 get_links_table()
-
+}
 }

@@ -16,7 +16,10 @@ table with game master data
 Get Game Master Data
 }
 \examples{
+\dontrun{
 games_u11 <- get_links_game()[7,]
 completed_games_u11 <- urls_completed_games(games_u11$links_url)
-if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1]) 
+if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1])
+}
+ 
 }

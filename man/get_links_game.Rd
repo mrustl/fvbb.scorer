@@ -13,6 +13,7 @@ tibble with links to games
 Get Links To Games
 }
 \examples{
+\dontrun{
 get_links_game()
-
+}
 }

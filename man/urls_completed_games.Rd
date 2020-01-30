@@ -16,6 +16,8 @@ vector with urls of completed games
 URLs of completed games
 }
 \examples{
+\dontrun{
 games_u11 <- get_links_game()[7,]
 urls_completed_games(games_u11$links_url)
+}
 }

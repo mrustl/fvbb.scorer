@@ -16,8 +16,9 @@ scorer table
 Create Table Scorer
 }
 \examples{
+\dontrun{
 games_u11 <- get_links_game()[7,]
-
+}
 create_table_scorers(url_games = games_u11$links_url)
 
 }
