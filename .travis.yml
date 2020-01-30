@@ -11,6 +11,8 @@ r_check_args: "--no-vignettes"
 r_build_args: "--no-build-vignettes"
 sudo: required
 cache: packages
+install:
+- travis_wait
 r_packages:
 - remotes
 - covr
