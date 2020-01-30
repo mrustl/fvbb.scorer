@@ -23,10 +23,8 @@ matrix:
     before_deploy:
     - Rscript -e 'remotes::install_cran("pkgdown")'
     deploy:
-      install:
-      - travis_wait
       provider: script
-      script: travis_wait 30 Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
+      script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
       skip_cleanup: 'true'
       on:
         branch: 
