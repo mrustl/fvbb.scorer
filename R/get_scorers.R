@@ -136,9 +136,8 @@ get_scorers <- function(game_link_full) {
 #' @examples
 #' \dontrun{
 #' games_u11 <- get_links_game()[7,]
-#' }
 #' create_table_scorers(url_games = games_u11$links_url)
-#' 
+#' }
 create_table_scorers <- function(url_games) {
   
   
