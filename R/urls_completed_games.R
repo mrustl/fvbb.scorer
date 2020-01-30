@@ -7,8 +7,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' urls_completed_games(games_u11$links_url)
+#' }
 urls_completed_games <- function(url_games) {
   
   game_results_links <- xml2::read_html(url_games) %>% 

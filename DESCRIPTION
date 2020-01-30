@@ -24,11 +24,12 @@ Imports:
     rlang,
     rvest,
     tidyr,
-    DT,
+    stringi,
     stringr,
     magrittr
 Suggests: 
     covr,
+    DT,
     knitr,
     rmarkdown
 VignetteBuilder: 

@@ -12,8 +12,9 @@
 #' @importFrom rvest html_text html_attr
 #' @importFrom rlang .data
 #' @examples
+#' \dontrun{
 #' get_links(url_saisonmanager = "https://fvbb.saisonmanager.de")
-#' 
+#' }
 get_links <- function(url_saisonmanager = default_saisonmanager_url(), 
                       select = "*") {
   
@@ -37,8 +38,9 @@ tibble::tibble(links_text = links %>% rvest::html_text() %>%  stringr::str_remov
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_links_game()
-#' 
+#' }
 get_links_game <- function() {
   
   get_links(select = "spielplan")
@@ -50,8 +52,9 @@ get_links_game <- function() {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_links_table()
-#' 
+#' }
 get_links_table <- function() {
   
   get_links(select = "table")
@@ -63,8 +66,9 @@ get_links_table <- function() {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_links_scorer()
-#' 
+#' }
 get_links_scorer <- function() {
   
   get_links(select = "scorer")

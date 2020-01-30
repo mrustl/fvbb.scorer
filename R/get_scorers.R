@@ -5,9 +5,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
 #' if(length(completed_games_u11)>0) get_teams(completed_games_u11[1]) 
+#' }
+
 get_teams <- function(game_link_full) {
   
   game_master_wide <- get_game_master(game_link_full)
@@ -44,9 +47,12 @@ get_teams <- function(game_link_full) {
 #' @return table with game master data
 #' @export
 #' @examples
+#' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
-#' if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1]) 
+#' if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1])
+#' }
+#'  
 get_game_master <- function(game_link_full) {
   
   game_tables <- xml2::read_html(game_link_full) %>% rvest::html_table()
@@ -82,10 +88,11 @@ get_game_master <- function(game_link_full) {
 #' @importFrom dplyr left_join
 #' @importFrom kwb.utils resolve
 #' @examples
+#' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
 #' if(length(completed_games_u11)>0) get_scorers(completed_games_u11[1])
-#' 
+#' }
 get_scorers <- function(game_link_full) {
   
   game_master_wide <- get_game_master(game_link_full)
@@ -124,9 +131,12 @@ get_scorers <- function(game_link_full) {
 #' @importFrom data.table rbindlist
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_remove_all
+#' @importFrom stringi stri_trans_general
+#' @importFrom rlang .data
 #' @examples
+#' \dontrun{
 #' games_u11 <- get_links_game()[7,]
-#' 
+#' }
 #' create_table_scorers(url_games = games_u11$links_url)
 #' 
 create_table_scorers <- function(url_games) {
@@ -139,10 +149,10 @@ create_table_scorers <- function(url_games) {
     
     team_players <- data.table::rbindlist(lapply(completed_games, function(url) get_teams(url)))
     team_players_stats <- team_players %>%  
-      dplyr::count(team, name)  %>% 
-      dplyr::mutate(team = stringi::stri_trans_general(team, "Latin-ASCII"), 
-                    name = stringi::stri_trans_general(name, "Latin-ASCII")) %>% 
-      dplyr::rename(scorer_name = name, games = n)
+      dplyr::count(.data$team, .data$name)  %>% 
+      dplyr::mutate(team = stringi::stri_trans_general(.data$team, "Latin-ASCII"), 
+                    name = stringi::stri_trans_general(.data$name, "Latin-ASCII")) %>% 
+      dplyr::rename(scorer_name = .data$name, games = .data$n)
     
     table_scorers <- data.table::rbindlist(lapply(completed_games, function(x) get_scorers(x)))
     
@@ -165,9 +175,11 @@ create_table_scorers <- function(url_games) {
       dplyr::mutate(team = stringi::stri_trans_general(team, "Latin-ASCII"), 
                     scorer_name = stringi::stri_trans_general(scorer_name, "Latin-ASCII")) %>% 
       dplyr::left_join(team_players_stats, by = c("team", "scorer_name")) %>% 
-      dplyr::rename(name = scorer_name) %>% 
-      dplyr::mutate(spg = scores / games) %>% 
-      dplyr::select(team, name, games, assistant, goal, scores, spg) %>%  
+      dplyr::rename(name = .data$scorer_name) %>% 
+      dplyr::mutate(spg = .data$scores / .data$games) %>% 
+      dplyr::select(.data$team, .data$name, .data$games, 
+                    .data$assistant, .data$goal, .data$scores, 
+                    .data$spg) %>%  
       dplyr::arrange(dplyr::desc(.data$scores)) 
     
   } else {
