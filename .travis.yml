@@ -22,10 +22,11 @@ matrix:
     - Rscript -e 'covr::codecov()'
     before_deploy:
     - Rscript -e 'remotes::install_cran("pkgdown")'
-    - Rscript -e 'paste("number of CPU cores on Travis:", parallel::detectCores())'
     deploy:
       provider: script
-      script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
+      script:
+      - Rscript -e 'print(paste("number of CPU cores on Travis:", parallel::detectCores()))'
+      - Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
       skip_cleanup: 'true'
       on:
         branch: 
