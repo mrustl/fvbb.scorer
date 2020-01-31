@@ -178,7 +178,7 @@ create_table_scorers <- function(url_games) {
                     scorer_name = stringi::stri_trans_general(scorer_name, "Latin-ASCII")) %>% 
       dplyr::left_join(team_players_stats, by = c("team", "scorer_name")) %>% 
       dplyr::rename(name = .data$scorer_name) %>% 
-      dplyr::mutate(spg = .data$scores / .data$games) %>% 
+      dplyr::mutate(spg = round(.data$scores / .data$games, 2)) %>% 
       dplyr::select(.data$team, .data$name, .data$games, 
                     .data$assistant, .data$goal, .data$scores, 
                     .data$spg) %>%  
