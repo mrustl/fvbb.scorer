@@ -4,10 +4,10 @@
 \alias{get_game_master}
 \title{Get Game Master Data}
 \usage{
-get_game_master(game_link_full)
+get_game_master(game_html)
 }
 \arguments{
-\item{game_link_full}{link to game stats url}
+\item{game_html}{xml2::read_html(game_link_full)  imported html with game stats}
 }
 \value{
 table with game master data
@@ -19,7 +19,7 @@ Get Game Master Data
 \dontrun{
 games_u11 <- get_links_game()[7,]
 completed_games_u11 <- urls_completed_games(games_u11$links_url)
-if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1])
+if(length(completed_games_u11)>0) get_game_master(xml2::read_html(completed_games_u11[1]))
 }
  
 }

@@ -23,8 +23,14 @@ games <- fvbb.scorer::get_links_game() %>%
                                     pattern = "^U1[1-9]",
                                     negate =  TRUE))
 
-games_stats_list <- setNames(sapply(games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
-                             nm = games$links_text)
+cores <- parallel::detectCores()
+
+cl <- parallel::makePSOCKcluster(cores)
+
+system.time(games_stats_list <- setNames(parallel::parLapply(cl, games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
+                             nm = games$links_text))
+
+parallel::stopCluster(cl)
 
 
 games_stats_list_played_only <- games_stats_list[unlist(lapply(games_stats_list, function(x) !inherits(x, "try-error")))]

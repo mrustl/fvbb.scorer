@@ -1,8 +1,8 @@
 ---
-title: "Kids"
+title: "Men"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Scorer Kids}
+  %\VignetteIndexEntry{Scorer Men}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,9 +21,15 @@ library(fvbb.scorer)
 games <- fvbb.scorer::get_links_game() %>%  
   dplyr::filter(stringr::str_detect(.data$links_text, pattern = "^U1[1-9]"))
 
-games_stats_list <- setNames(sapply(games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
-                             nm = games$links_text)
 
+cores <- parallel::detectCores()
+
+cl <- parallel::makePSOCKcluster(cores)
+
+system.time(games_stats_list <- setNames(parallel::parLapply(cl, games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
+                             nm = games$links_text))
+
+parallel::stopCluster(cl)
 
 games_stats_list_played_only <- games_stats_list[unlist(lapply(games_stats_list, function(x) !inherits(x, "try-error")))]
 

@@ -1,6 +1,6 @@
 #' Get Teams
 #'
-#' @param game_link_full link to game stats url
+#' @param game_html xml2::read_html(game_link_full)  imported html with game stats
 #' @return table with team players
 #' @export
 #'
@@ -8,22 +8,25 @@
 #' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
-#' if(length(completed_games_u11)>0) get_teams(completed_games_u11[1]) 
+#' if(length(completed_games_u11)>0) get_teams(xml2::read_html(completed_games_u11[1])) 
 #' }
 
-get_teams <- function(game_link_full) {
+get_teams <- function(game_html) {
   
-  game_master_wide <- get_game_master(game_link_full)
+  game_master_wide <- get_game_master(game_html)
   
-  team_names <- xml2::read_html(game_link_full) %>% rvest::html_nodes("b")
   
-  team_names <- stringr::str_remove_all(team_names[!is.na(team_names %>% rvest::html_attr("style"))] %>% rvest::html_text(), 
+  team_names <- game_html %>% rvest::html_nodes("b")
+  
+  team_names <- stringr::str_remove_all(team_names[!is.na(team_names %>% 
+                                                            rvest::html_attr("style"))] %>% 
+                                          rvest::html_text(), 
                                         ":")
   
-  players <- xml2::read_html(game_link_full) %>% rvest::html_nodes("div") %>% rvest::html_attr("style") 
+  players <- game_html %>% rvest::html_nodes("div") %>% rvest::html_attr("style") 
   team_idx <- grepl("^width", players)
   
-  teams <- xml2::read_html(game_link_full) %>% rvest::html_nodes("div") 
+  teams <- game_html %>% rvest::html_nodes("div") 
   teams <- teams[team_idx] %>% rvest::html_text()
   
   team_1 <- tibble::tibble(team = team_names[1], 
@@ -43,19 +46,19 @@ get_teams <- function(game_link_full) {
 
 #' Get Game Master Data
 #'
-#' @param game_link_full link to game stats url
+#' @param game_html xml2::read_html(game_link_full)  imported html with game stats
 #' @return table with game master data
 #' @export
 #' @examples
 #' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
-#' if(length(completed_games_u11)>0) get_game_master(completed_games_u11[1])
+#' if(length(completed_games_u11)>0) get_game_master(xml2::read_html(completed_games_u11[1]))
 #' }
 #'  
-get_game_master <- function(game_link_full) {
+get_game_master <- function(game_html) {
   
-  game_tables <- xml2::read_html(game_link_full) %>% rvest::html_table()
+  game_tables <- game_html %>% rvest::html_table()
   
   
   
@@ -77,7 +80,7 @@ get_game_master <- function(game_link_full) {
 
 #' Get Scorers
 #'
-#' @param game_link_full link to game stats url
+#' @param game_html xml2::read_html(game_link_full)  imported html with game stats
 #'
 #' @return table with scorers
 #' @export
@@ -91,13 +94,13 @@ get_game_master <- function(game_link_full) {
 #' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' completed_games_u11 <- urls_completed_games(games_u11$links_url)
-#' if(length(completed_games_u11)>0) get_scorers(completed_games_u11[1])
+#' if(length(completed_games_u11)>0) get_scorers(xml2::read_html(completed_games_u11[1]))
 #' }
-get_scorers <- function(game_link_full) {
+get_scorers <- function(game_html) {
   
-  game_master_wide <- get_game_master(game_link_full)
+  game_master_wide <- get_game_master(game_html)
   
-  game_tables <- xml2::read_html(game_link_full) %>% rvest::html_table()
+  game_tables <-   game_html %>% rvest::html_table()
   
   game_stats <- game_tables[[2]]
   
@@ -146,14 +149,14 @@ create_table_scorers <- function(url_games) {
   if(length(completed_games)>0) {
     
     
-    team_players <- data.table::rbindlist(lapply(completed_games, function(url) get_teams(url)))
+    team_players <- data.table::rbindlist(lapply(completed_games, function(url) get_teams(xml2::read_html(url))))
     team_players_stats <- team_players %>%  
       dplyr::count(.data$team, .data$name)  %>% 
       dplyr::mutate(team = stringi::stri_trans_general(.data$team, "Latin-ASCII"), 
                     name = stringi::stri_trans_general(.data$name, "Latin-ASCII")) %>% 
       dplyr::rename(scorer_name = .data$name, games = .data$n)
     
-    table_scorers <- data.table::rbindlist(lapply(completed_games, function(x) get_scorers(x)))
+    table_scorers <- data.table::rbindlist(lapply(completed_games, function(x) get_scorers(xml2::read_html(x))))
     
     table_scorer_long <- tidyr::pivot_longer(table_scorers, 
                                              names_to = "score_type", 
