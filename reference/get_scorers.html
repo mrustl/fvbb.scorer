@@ -92,7 +92,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/scorer.html">Scorer</a>
+      <a href="../articles/kids.html">Men</a>
+    </li>
+    <li>
+      <a href="../articles/men.html">Men</a>
     </li>
   </ul>
 </li>
@@ -129,14 +132,14 @@
     <p>Get Scorers</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_scorers</span>(<span class='no'>game_link_full</span>)</pre>
+    <pre class="usage"><span class='fu'>get_scorers</span>(<span class='no'>game_html</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>game_link_full</th>
-      <td><p>link to game stats url</p></td>
+      <th>game_html</th>
+      <td><p>xml2::read_html(game_link_full)  imported html with game stats</p></td>
     </tr>
     </table>
 
@@ -145,41 +148,11 @@
     <p>table with scorers</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>games_u11</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_links_game.html'>get_links_game</a></span>()[<span class='fl'>7</span>,]
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>games_u11</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_links_game.html'>get_links_game</a></span>()[<span class='fl'>7</span>,]
 <span class='no'>completed_games_u11</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='urls_completed_games.html'>urls_completed_games</a></span>(<span class='no'>games_u11</span>$<span class='no'>links_url</span>)
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>completed_games_u11</span>)<span class='kw'>&gt;</span><span class='fl'>0</span>) <span class='fu'>get_scorers</span>(<span class='no'>completed_games_u11</span>[<span class='fl'>1</span>])</div><div class='output co'>#&gt;                   Austragungsort      Datum                      Liga
-#&gt; 1 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 2 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 3 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 4 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 5 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 6 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt; 7 Berlin, Brillat-Savarin-Schule 21.09.2019 U11 Kleintor Regionalliga
-#&gt;                   Schiedsrichter Spielbeginn Spielnummer Zuschauerzahl  time
-#&gt; 1 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 13:46
-#&gt; 2 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 15:23
-#&gt; 3 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 24:00
-#&gt; 4 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 25:34
-#&gt; 5 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 26:00
-#&gt; 6 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 26:06
-#&gt; 7 Ahrens, Sascha / Siar, Kubilay   11:00 Uhr           1             1 30:45
-#&gt;   event score                          scorer                team
-#&gt; 1   Tor   0:1    Linus Rabe (Malte Schneider)              SG Ost
-#&gt; 2   Tor   1:1 Anton Bandrock (Kolja Bandrock) Eisbären Juniors II
-#&gt; 3   Tor   2:1                  Anton Bandrock Eisbären Juniors II
-#&gt; 4   Tor   2:2                      Linus Rabe              SG Ost
-#&gt; 5   Tor   3:2                  Dexter Bertram Eisbären Juniors II
-#&gt; 6   Tor   3:3                      Linus Rabe              SG Ost
-#&gt; 7   Tor   3:4 Alexander  Lübbert (Linus Rabe)              SG Ost
-#&gt;          scorer_goal scorer_assistant
-#&gt; 1         Linus Rabe  Malte Schneider
-#&gt; 2     Anton Bandrock   Kolja Bandrock
-#&gt; 3     Anton Bandrock             &lt;NA&gt;
-#&gt; 4         Linus Rabe             &lt;NA&gt;
-#&gt; 5     Dexter Bertram             &lt;NA&gt;
-#&gt; 6         Linus Rabe             &lt;NA&gt;
-#&gt; 7 Alexander  Lübbert       Linus Rabe</div><div class='input'>
-</div></pre>
+<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>completed_games_u11</span>)<span class='kw'>&gt;</span><span class='fl'>0</span>) <span class='fu'>get_scorers</span>(<span class='kw pkg'>xml2</span><span class='kw ns'>::</span><span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_html</a></span>(<span class='no'>completed_games_u11</span>[<span class='fl'>1</span>]))
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
