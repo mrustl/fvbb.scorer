@@ -18,7 +18,9 @@ urls_completed_games <- function(url_games) {
 
 results_text <- rvest::html_text(game_results_links)  
   
-is_over <-  results_text  != "" & stringr::str_detect(results_text,pattern = "forfait", negate = TRUE)
+is_over <-  results_text  != "" & stringr::str_detect(results_text, 
+                                                      pattern = "forfait",
+                                                      negate = TRUE)
 
 game_links <- game_results_links[is_over] %>%  rvest::html_attr("href") 
 game_links_full <- sprintf("%s%s", default_saisonmanager_url(), game_links)

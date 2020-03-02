@@ -1,8 +1,8 @@
 ---
-title: "Kids"
+title: "2018"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Scorer Men}
+  %\VignetteIndexEntry{Scorer 2018}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,9 +18,9 @@ DT::datatable(NULL) ### required: https://stackoverflow.com/a/39734221
 ```{r setup, include=FALSE}
 library(fvbb.scorer)
 
-games <- fvbb.scorer::get_links_game() %>%  
-  dplyr::filter(stringr::str_detect(.data$links_text, pattern = "^U1[1-9]"))
+selected_url <- as.character(fvbb.scorer:::saisonmanager_urls()["2018"])
 
+games <- fvbb.scorer::get_links_game(url_saisonmanager = selected_url)
 
 cores <- parallel::detectCores()
 
@@ -31,7 +31,10 @@ system.time(games_stats_list <- setNames(parallel::parLapply(cl, games$links_url
 
 parallel::stopCluster(cl)
 
+
 games_stats_list_played_only <- games_stats_list[unlist(lapply(games_stats_list, function(x) !inherits(x, "try-error")))]
+
+jsonlite::write_json(games_stats_list_played_only,path = "2019.json")
 
 #names(games_stats_list_played_only)
 

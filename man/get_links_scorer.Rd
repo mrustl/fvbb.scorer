@@ -4,7 +4,10 @@
 \alias{get_links_scorer}
 \title{Get Links To Scorers}
 \usage{
-get_links_scorer()
+get_links_scorer(url_saisonmanager = default_saisonmanager_url())
+}
+\arguments{
+\item{url_saisonmanager}{base url to FVBB saisonmanager (default: default_saisonmanager_url())}
 }
 \value{
 tibble with links to scorers

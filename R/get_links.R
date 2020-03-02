@@ -33,7 +33,7 @@ tibble::tibble(links_text = links %>% rvest::html_text() %>%  stringr::str_remov
 }
 
 #' Get Links To Games
-
+#' @param url_saisonmanager base url to FVBB saisonmanager (default: default_saisonmanager_url())
 #' @return tibble with links to games
 #' @export
 #'
@@ -41,13 +41,13 @@ tibble::tibble(links_text = links %>% rvest::html_text() %>%  stringr::str_remov
 #' \dontrun{
 #' get_links_game()
 #' }
-get_links_game <- function() {
+get_links_game <- function(url_saisonmanager = default_saisonmanager_url()) {
   
-  get_links(select = "spielplan")
+  get_links(url_saisonmanager, select = "spielplan")
 }
 
 #' Get Links To Tables
-#'
+#' @param url_saisonmanager base url to FVBB saisonmanager (default: default_saisonmanager_url())
 #' @return tibble with links to tables
 #' @export
 #'
@@ -55,13 +55,13 @@ get_links_game <- function() {
 #' \dontrun{
 #' get_links_table()
 #' }
-get_links_table <- function() {
+get_links_table <- function(url_saisonmanager = default_saisonmanager_url()) {
   
-  get_links(select = "table")
+  get_links(url_saisonmanager, select = "table")
 }
 
 #' Get Links To Scorers
-#'
+#' @param url_saisonmanager base url to FVBB saisonmanager (default: default_saisonmanager_url())
 #' @return tibble with links to scorers
 #' @export
 #'
@@ -69,7 +69,7 @@ get_links_table <- function() {
 #' \dontrun{
 #' get_links_scorer()
 #' }
-get_links_scorer <- function() {
+get_links_scorer <- function(url_saisonmanager = default_saisonmanager_url()) {
   
-  get_links(select = "scorer")
+  get_links(url_saisonmanager, select = "scorer")
 }

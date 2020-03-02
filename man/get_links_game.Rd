@@ -4,7 +4,10 @@
 \alias{get_links_game}
 \title{Get Links To Games}
 \usage{
-get_links_game()
+get_links_game(url_saisonmanager = default_saisonmanager_url())
+}
+\arguments{
+\item{url_saisonmanager}{base url to FVBB saisonmanager (default: default_saisonmanager_url())}
 }
 \value{
 tibble with links to games

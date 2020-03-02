@@ -136,27 +136,35 @@ get_scorers <- function(game_html) {
 #' @importFrom stringr str_remove_all
 #' @importFrom stringi stri_trans_general
 #' @importFrom rlang .data
+#' @importFrom parallel detectCores makePSOCKcluster parLapply 
 #' @examples
 #' \dontrun{
 #' games_u11 <- get_links_game()[7,]
 #' create_table_scorers(url_games = games_u11$links_url)
 #' }
 create_table_scorers <- function(url_games) {
-  
+
   
   completed_games <- urls_completed_games(url_games)
   
   if(length(completed_games)>0) {
+
+    cores <- parallel::detectCores()
+    cl <- parallel::makePSOCKcluster(cores)
     
-    
-    team_players <- data.table::rbindlist(lapply(completed_games, function(url) get_teams(xml2::read_html(url))))
+    team_players <- data.table::rbindlist(parallel::parLapply(cl, 
+                                                              completed_games, 
+                                                              function(url) get_teams(xml2::read_html(url))))
     team_players_stats <- team_players %>%  
       dplyr::count(.data$team, .data$name)  %>% 
       dplyr::mutate(team = stringi::stri_trans_general(.data$team, "Latin-ASCII"), 
                     name = stringi::stri_trans_general(.data$name, "Latin-ASCII")) %>% 
       dplyr::rename(scorer_name = .data$name, games = .data$n)
     
-    table_scorers <- data.table::rbindlist(lapply(completed_games, function(x) get_scorers(xml2::read_html(x))))
+    table_scorers <- data.table::rbindlist(parallel::parLapply(cl,
+                                                               completed_games, 
+                                                               function(x) get_scorers(xml2::read_html(x))))
+    parallel::stopCluster(cl)
     
     table_scorer_long <- tidyr::pivot_longer(table_scorers, 
                                              names_to = "score_type", 
@@ -174,8 +182,8 @@ create_table_scorers <- function(url_games) {
       dplyr::count(.data$team, .data$scorer_name, .data$score_type) %>% 
       tidyr::pivot_wider(names_from = "score_type", values_from = "n", values_fill = list(n = 0)) %>% 
       dplyr::mutate(scores = .data$goal + .data$assistant) %>% 
-      dplyr::mutate(team = stringi::stri_trans_general(team, "Latin-ASCII"), 
-                    scorer_name = stringi::stri_trans_general(scorer_name, "Latin-ASCII")) %>% 
+      dplyr::mutate(team = stringi::stri_trans_general(.data$team, "Latin-ASCII"), 
+                    scorer_name = stringi::stri_trans_general(.data$scorer_name, "Latin-ASCII")) %>% 
       dplyr::right_join(team_players_stats, by = c("team", "scorer_name")) %>% 
       dplyr::rename(name = .data$scorer_name) %>% 
       dplyr::mutate(spg = round(.data$scores / .data$games, 2)) %>% 

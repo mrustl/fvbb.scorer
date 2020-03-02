@@ -21,6 +21,7 @@ Imports:
     tibble, 
     kwb.utils,
     xml2,
+    parallel,
     rlang,
     rvest,
     tidyr,
@@ -31,7 +32,6 @@ Suggests:
     covr,
     DT,
     knitr,
-    parallel,
     rmarkdown
 VignetteBuilder: 
     knitr
