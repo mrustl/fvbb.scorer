@@ -23,11 +23,10 @@ matrix:
     before_deploy:
     - Rscript -e 'remotes::install_cran("pkgdown")'
     - Rscript -e 'remotes::install_github("kwb-r/kwb.pkgbuild")'
+    - Rscript -e 'print(paste("number of CPU cores on Travis:", parallel::detectCores()))'
     deploy:
       provider: script
-      script:
-      - Rscript -e 'print(paste("number of CPU cores on Travis:", parallel::detectCores()))'
-      - Rscript -e 'kwb.pkgbuild::deploy_site_github_with_extra_files()'
+      script: Rscript -e 'kwb.pkgbuild::deploy_site_github_with_extra_files()'
       skip_cleanup: 'true'
       on:
         branch: 
