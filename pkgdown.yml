@@ -2,6 +2,7 @@ pandoc: '2.2'
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  kids: kids.html
-  men: men.html
+  '2018': 2018.html
+  '2019': 2019.html
+  '2020': 2020.html
 
