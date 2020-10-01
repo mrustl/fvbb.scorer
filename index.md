@@ -1,5 +1,5 @@
 [![Appveyor build Status](https://ci.appveyor.com/api/projects/status/nf7jg18tembsvufb?svg=true)](https://ci.appveyor.com/project/mrustl/fvbb-scorer)
-[![Travis build Status](https://travis-ci.org/mrustl/fvbb.scorer.svg?branch=master)](https://travis-ci.org/mrustl/fvbb.scorer)
+[![Travis build Status](https://travis-ci.com/mrustl/fvbb.scorer.svg?branch=master)](https://travis-ci.com/mrustl/fvbb.scorer)
 [![codecov](https://codecov.io/github/mrustl/fvbb.scorer/branch/master/graphs/badge.svg)](https://codecov.io/github/mrustl/fvbb.scorer)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/fvbb.scorer)]()
