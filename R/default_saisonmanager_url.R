@@ -13,7 +13,8 @@ default_saisonmanager_url <- function() {
 
 saisonmanager_urls <- function() {
   
-  list("2020" = "https://fvbb.saisonmanager.de",
+  list("2021" = "https://fvbb.saisonmanager.de",
+       "2020" = "https://fvbb.archiv1920.saisonmanager.de",
        "2019" = "https://fvbb.archiv1819.saisonmanager.de",
        "2018" = "https://fvbb.archiv1718.saisonmanager.de",
        "2017" = "https://fvbb.archiv1617.saisonmanager.de",
