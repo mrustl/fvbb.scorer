@@ -1,8 +1,9 @@
 pandoc: '2.2'
-pkgdown: 1.4.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   '2018': 2018.html
   '2019': 2019.html
   '2020': 2020.html
+last_built: 2020-10-01T09:14Z
 
