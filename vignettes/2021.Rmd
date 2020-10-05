@@ -1,0 +1,61 @@
+---
+title: "2021"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Scorer 2021}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+DT::datatable(NULL) ### required: https://stackoverflow.com/a/39734221
+```
+
+```{r setup, include=FALSE}
+library(fvbb.scorer)
+
+selected_url <- as.character(fvbb.scorer:::saisonmanager_urls()["2021"])
+
+games <- fvbb.scorer::get_links_game(url_saisonmanager = selected_url)
+
+cores <- parallel::detectCores()
+
+cl <- parallel::makePSOCKcluster(cores)
+
+system.time(games_stats_list <- setNames(parallel::parLapply(cl, games$links_url, function(url) try(fvbb.scorer::create_table_scorers(url))),
+                             nm = games$links_text))
+
+parallel::stopCluster(cl)
+
+
+games_stats_list_played_only <- games_stats_list[unlist(lapply(games_stats_list, function(x) !inherits(x, "try-error")))]
+
+jsonlite::write_json(games_stats_list_played_only,path = "2020.json")
+
+#names(games_stats_list_played_only)
+
+
+
+```
+
+
+```{r scorers, echo = FALSE, results ='asis'}
+
+
+for (i in seq_along(games_stats_list_played_only)) {
+
+  
+cat(sprintf("\n## %s\n\n", 
+        names(games_stats_list_played_only)[i]))
+print(htmltools::tagList(DT::datatable(games_stats_list_played_only[[i]])))
+cat("\n\n")
+
+}
+
+
+```
+
